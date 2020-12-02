@@ -7,6 +7,7 @@ import Header from './components/partials/Header';
 import Footer from './components/partials/Footer';
 import Error from './pages/Error';
 import Signin from './pages/Signin';
+import Signup from './pages/Signup'
 import {Template} from './components/TemplateComponents';
 import {BrowserRouter, Switch,Route} from 'react-router-dom';
 const Page=(props)=>{
@@ -17,6 +18,7 @@ const Page=(props)=>{
         <Switch>
           <Route exact path="/"><Home/></Route>
           <Route exact path="/signin"><Signin/></Route>
+          <Route exact path="/signup"><Signup/></Route>
           <Route exact path="/about"><About/></Route>
           <Route><Error/></Route>
         </Switch>
