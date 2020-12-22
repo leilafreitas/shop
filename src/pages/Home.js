@@ -2,11 +2,14 @@ import React,{useState,useEffect} from 'react';
 import {PageArea,SearchArea} from './HomeStyled';
 import {Link} from 'react-router-dom';
 import useApi from '../helpers/OLXAPI';
+import AdItem from '../components/partials/AdItem';
 import {PageContainer} from '../components/TemplateComponents'
 function Home(){
     const api=useApi();
     const[listState,setListState]=useState([]);
     const[categories,setCategories]=useState([]);
+    const[adList,setAdList]=useState([]);
+    
 
     useEffect(()=>{
         const getList=async()=>{
@@ -24,6 +27,19 @@ function Home(){
         
         getCategories();
     },[])
+    useEffect(()=>{
+        const getAds=async()=>{
+            const json= await api.getAds({
+                sort:'desc',
+                limit:8
+
+            });
+            setAdList(json.ads);
+        } 
+        
+        getAds();
+    },[])
+
     return(
         <>
             <SearchArea>
@@ -42,7 +58,8 @@ function Home(){
                         </form>
                     </div>
                     <div className="categoryList">
-                            {
+                            {   
+                                
                                 categories.map((item,key)=>{
                                     return (<Link key={key} className="categoryItem" to={`/ads?cats=${item.slug}`}>
                                         <img src={item.img} alt=""/>
@@ -55,7 +72,17 @@ function Home(){
             </SearchArea>
             <PageContainer>        
                 <PageArea>
-                    
+                    <h2>Anúncios Recentes</h2>
+                    <div className="list">
+                        { 
+                            adList.map((item,key)=>
+                                <AdItem key={key} data={item}/>
+                            )
+                        }
+                    </div>
+                    <Link to="/ads" className="seeAllLink">Ver todos</Link>
+                    <hr/>
+                    ...
                 </PageArea>
             </PageContainer>
         </>

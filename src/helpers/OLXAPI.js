@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import qs from 'qs';
-const base="http://localhost:5000";
+//const base="http://localhost:5000";
+const base ="http://alunos.b7web.com.br:501";
 
 //O back ta na pasta vendas/backend
 const apiFetchPost= async(endpoint,body)=>{
@@ -25,7 +26,26 @@ const apiFetchPost= async(endpoint,body)=>{
 
     return json;
 }
-const apiFetchGet =async(endpoint,body=[])=>{
+const apiFetchFile = async(endpoint,body=[])=>{
+    if(!body.token){
+        let token = Cookies.get('token');
+        if(token){
+            body.append('token',token);
+        }
+    }
+    const res = await fetch(base+endpoint, {
+        method:'POST',
+        body
+    });
+    const json = await res.json();
+    if(json.notallowed){
+        window.location.href="/signin";
+    }
+
+    return json;
+}
+
+const apiFetchGet = async(endpoint,body=[])=>{
     if(!body.token){
         let token =Cookies.get('token');
         if(token){
@@ -33,6 +53,7 @@ const apiFetchGet =async(endpoint,body=[])=>{
         }
     }
     const res=await fetch(`${base+endpoint}?${qs.stringify(body)}`);
+    
     const json = await res.json();
     if(json.notallowed){
         window.location.href="/signin";
@@ -69,6 +90,27 @@ const OlxAPI = {
         );
         return json.categories;
         
+    },
+    getAds: async(options)=>{
+        const json =await apiFetchGet(
+            '/ad/list',
+            options
+        );
+        return json;
+    },
+    getAd:async(id,otherAds=false)=>{
+        const json = await apiFetchGet(
+            '/ad/item',
+            {id,otherAds}
+        );
+        return json;
+    },
+    addAd:async(formData)=>{
+        const json = await apiFetchFile(
+            '/ad/add',
+            formData
+        );
+        return json
     }
 };
 export default ()=>OlxAPI;

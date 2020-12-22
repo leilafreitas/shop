@@ -50,7 +50,7 @@ function Signin(){
                    <label className="area">
                        <div className="area-title">Lembrar Senha?</div>
                        <div className="area-input">
-                           <input type='checkbox' checked={remenberPassword}  disabled={disabled} onClick={()=>SetRemenberPassword(!remenberPassword)}/>
+                           <input type='checkbox'  checked={remenberPassword}  disabled={disabled} onClick={()=>SetRemenberPassword(!remenberPassword)}/>
                        </div>
                    </label>
                    <label className="area">
