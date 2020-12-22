@@ -4,20 +4,54 @@ import {useHistory,useLocation} from 'react-router-dom';
 import useApi from '../helpers/OLXAPI';
 import AdItem from '../components/partials/AdItem';
 import {PageContainer} from '../components/TemplateComponents'
+let timer;
 function Home(){
     const api=useApi();
     const history=useHistory();
+
     const useQueryString =()=>{
         return new URLSearchParams(useLocation().search);
     }
     const query=useQueryString();
+    const [adsTotal,setAdsTota] = useState(0);
+    const [pageCount,setPageCount] = useState(0);
+    const [loading,setLoading] = useState(true);
     const [q,setQ] = useState(query.get('q') != null ? query.get('q'):'');
     const [cat,setCat] = useState(query.get('cats') != null ? query.get('cats'):'');
     const [state,setState] = useState(query.get('state') != null ? query.get('state'):'');
     const [listState,setListState]=useState([]);
     const [categories,setCategories]=useState([]);
     const [adList,setAdList]=useState([]);
-    
+    const [resultOpacity,setResulOpacity] = useState(0.3);
+    const getAdsList =async() => {
+        setLoading(true);
+        const json= await api.getAds({
+            sort:'desc',
+            limit:9,
+            q,
+            cat,
+            state
+
+        });
+        setAdList(json.ads);
+        setAdsTota(json.total);
+        setResulOpacity(1);
+        setLoading(false);
+    }
+    useEffect(()=>{
+        if(adList.length > 0){
+            setPageCount(Math.ceil(adsTotal/adList.length))
+            console.log(pageCount);
+        }else{
+            setPageCount(0);
+        }
+        
+    },[adsTotal])
+    let pagination = [];
+    for (let i=0;i<pageCount;i++){
+        pagination.push(i+1);
+    }
+    console.log(pagination);
     useEffect(()=>{
         let queryString = [];
         if(q){
@@ -32,7 +66,14 @@ function Home(){
         history.replace({
             search:`?${queryString.join('&')}`
         })
+
+        if(timer){
+            clearTimeout(timer);
+        }
+        timer = setTimeout(getAdsList,2000);
+        setResulOpacity(0.3);
     },[q,cat,state]);
+
     useEffect(()=>{
         const getList=async()=>{
             const slists= await api.getStates();
@@ -47,18 +88,6 @@ function Home(){
         } 
         
         getCategories();
-    },[])
-    useEffect(()=>{
-        const getAds=async()=>{
-            const json= await api.getAds({
-                sort:'desc',
-                limit:8
-
-            });
-            setAdList(json.ads);
-        } 
-        
-        getAds();
     },[])
 
     return(
@@ -90,7 +119,34 @@ function Home(){
                     </form>
                 </div>
                 <div className="rightSide">
-                    ...
+                    <h2>Resultado</h2>
+                    {
+                        loading &&
+                            <div className="listWarning">
+                                Carregando...
+                            </div>
+                    }
+                    {
+                        !loading && adList.length === 0 &&
+                            <div className="listWarning">
+                                Não encontramos resultados
+                            </div>
+                    }
+
+                    <div className="list" style={{opacity:resultOpacity}}>
+                        {adList.map((item,key)=>{
+                            return <AdItem key={key} data={item}/>
+                        })}
+
+                    </div>
+                    
+                    <div className="pagination">
+                        {
+                         pagination.map((item,key)=>{
+                             return <div key={key} className="pagItem">{item}</div>
+                         })   
+                        }
+                    </div>
                 </div>
             </PageArea>
         </PageContainer>
