@@ -5,6 +5,7 @@ import {doLogin} from '../helpers/authHandler';
 import {UserDiv,AdsDiv} from './MinhaContaStyled';
 import ItemEdit from '../components/partials/ItemEdit';
 import {PageContainer, PageTitle,ErrorMessage} from '../components/TemplateComponents'
+import Modal from '../components/partials/Modal';
 function MinhaConta(){
     const api= useApi();
     const [user,setUser] = useState([]);
@@ -18,7 +19,6 @@ function MinhaConta(){
     const [resultOpacity,setResulOpacity] = useState(0.3);
     const [loading,setLoading] = useState(true);
     const [adList,setAdList] = useState([]);
-
     useEffect(()=>{
         const getUser = async()=>{
             const json = await api.getUser();
