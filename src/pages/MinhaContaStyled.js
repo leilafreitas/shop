@@ -56,14 +56,17 @@ export const UserDiv = styled.div`
     }
 `;
 export const AdsDiv = styled.div`
-   flex:1;
+    flex:1;
 
     h2{
+        margin-left:25px;
         margin-top:0;
         font-size:18px;
     }
     .list{
         display:flex;
+        justify-content:center;
+        align-items:center;
         flex-wrap:wrap;
         .adItem{
             width:33%;

@@ -3,7 +3,7 @@ import {PageArea} from './SigninStyled';
 import useApi from '../helpers/OLXAPI';
 import {doLogin} from '../helpers/authHandler';
 import {UserDiv,AdsDiv} from './MinhaContaStyled';
-import AdItem from '../components/partials/AdItem';
+import ItemEdit from '../components/partials/ItemEdit';
 import {PageContainer, PageTitle,ErrorMessage} from '../components/TemplateComponents'
 function MinhaConta(){
     const api= useApi();
@@ -114,7 +114,33 @@ function MinhaConta(){
                 </form>
             </UserDiv>
             <br/>
+            <AdsDiv>
+                <h2>Resultado</h2>
+                    {
+                        loading && adList.length === 0 &&
+                            <div className="listWarning">
+                                Carregando...
+                            </div>
+                    }
+                    {
+                        !loading && adList.length === 0 &&
+                            <div className="listWarning">
+                                Não encontramos resultados
+                            </div>
+                    }
+                    {
+                        adList.length > 0 &&
+                        <div className="list">
+                            {adList.map((item,key)=>{
+                                return <ItemEdit key={key} data={item}/>
+                                
+                            })}
 
+                        </div>
+                    }
+
+                
+            </AdsDiv>
             
         </>
     );
