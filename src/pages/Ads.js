@@ -23,15 +23,18 @@ function Home(){
     const [categories,setCategories]=useState([]);
     const [adList,setAdList]=useState([]);
     const [resultOpacity,setResulOpacity] = useState(0.3);
-    const getAdsList =async() => {
+    const [currentPage,setCurrentPage] = useState(1);
+    const getAdsList =async() => {       
         setLoading(true);
+        let offset = 0;
+        offset = (currentPage-1) * 8;
         const json= await api.getAds({
             sort:'desc',
-            limit:9,
+            limit:8,
             q,
             cat,
-            state
-
+            state,
+            offset
         });
         setAdList(json.ads);
         setAdsTota(json.total);
@@ -47,11 +50,14 @@ function Home(){
         }
         
     },[adsTotal])
+    useEffect(()=>{
+        setResulOpacity(0.3)
+        getAdsList();
+    },[currentPage])
     let pagination = [];
     for (let i=0;i<pageCount;i++){
         pagination.push(i+1);
     }
-    console.log(pagination);
     useEffect(()=>{
         let queryString = [];
         if(q){
@@ -72,6 +78,7 @@ function Home(){
         }
         timer = setTimeout(getAdsList,2000);
         setResulOpacity(0.3);
+        setCurrentPage(1);
     },[q,cat,state]);
 
     useEffect(()=>{
@@ -121,7 +128,7 @@ function Home(){
                 <div className="rightSide">
                     <h2>Resultado</h2>
                     {
-                        loading &&
+                        loading && adList.length === 0 &&
                             <div className="listWarning">
                                 Carregando...
                             </div>
@@ -143,15 +150,13 @@ function Home(){
                     <div className="pagination">
                         {
                          pagination.map((item,key)=>{
-                             return <div key={key} className="pagItem">{item}</div>
+                             return <div onClick={()=>setCurrentPage(item)}key={key} className={item === currentPage ? "pagItem active":"pagItem"}>{item}</div>
                          })   
                         }
                     </div>
                 </div>
             </PageArea>
         </PageContainer>
-        
-
     );
 
 }

@@ -6,10 +6,11 @@ import AdItem from '../components/partials/AdItem';
 import {PageContainer} from '../components/TemplateComponents'
 function Home(){
     const api=useApi();
-    const[listState,setListState]=useState([]);
-    const[categories,setCategories]=useState([]);
-    const[adList,setAdList]=useState([]);
-    
+    const [listState,setListState]=useState([]);
+    const [categories,setCategories]=useState([]);
+    const [adList,setAdList]=useState([]);
+    const [q,setQ]=useState('');
+    const [state,setState] = useState('');
 
     useEffect(()=>{
         const getList=async()=>{
@@ -45,12 +46,12 @@ function Home(){
             <SearchArea>
                 <PageContainer>
                     <div className="searchBox">
-                        <form method="GET" action ="/ads">
+                        <form method="GET" action ={q||state ? `/ads?q=${q}&state=${state}`: `/ads`}>
                             <input type='text' name='q' placeholder="O que você procura?"/>
                             <select name="state">
                             {
                                 listState.map((item,key)=>{
-                                return <option  key={key} value={item._id}>{item.name}</option>
+                                return <option  key={key} value={item.name}>{item.name}</option>
                                 })
                             }
                             </select>

@@ -26,6 +26,24 @@ const apiFetchPost= async(endpoint,body)=>{
 
     return json;
 }
+const apiFetchPut= async(endpoint,body)=>{
+    if(!body.token){
+        let token = Cookies.get('token');
+        if(token){
+            body.token = token;
+        }
+    }
+    const res=await fetch(base+endpoint, {
+        method:'PUT',
+        body:JSON.stringify(body)
+    });
+    const json = await res.json();
+    if(json.notallowed){
+        window.location.href="/signin";
+    }
+
+    return json;
+}
 const apiFetchFile = async(endpoint,body=[])=>{
     if(!body.token){
         let token = Cookies.get('token');
@@ -111,6 +129,20 @@ const OlxAPI = {
             formData
         );
         return json
+    },
+    getUser:async()=>{
+        const json =  await apiFetchGet(
+            '/user/me',
+        );
+        return json
+    },
+    putUser:async(name,email,password,state)=>{
+        const json =await apiFetchPut(
+            '/user/me',
+            {name,email,password,state}
+        );
+        
+        return json;
     }
 };
 export default ()=>OlxAPI;

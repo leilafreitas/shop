@@ -84,6 +84,10 @@ export const PageArea=styled.div`
                 &:hover{
                     border:1px solid #ccc;
                 }
+
+                &.active{
+                    background-color:#ccc;
+                }
             }
         }
     }

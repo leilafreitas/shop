@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import {connect} from 'react-redux';
 import Home from './pages/Home';
+import MinhaConta from './pages/MinhaConta';
 import AddAd from './pages/AddAd';
 import Ads from './pages/Ads';
 import About from './pages/About';
@@ -26,6 +27,7 @@ const Page=(props)=>{
           <RouteHandler exact path="/about"><About/></RouteHandler>
           <RouteHandler exact path="/ads"><Ads/></RouteHandler>
           <RouteHandler private exact path="/post-an-ad"><AddAd/></RouteHandler>
+          <RouteHandler private exact path='/my-account'><MinhaConta/></RouteHandler>
           <RouteHandler exact path="/ad/:id"><AdPage/></RouteHandler>
           <RouteHandler><Error/></RouteHandler>
         </Switch>
