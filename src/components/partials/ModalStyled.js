@@ -15,4 +15,5 @@ export const ModalBackground =styled.div`
 export const ModalArea = styled.div`
     background-color:#FFF;
     padding:10px;
+    z-index:99;
 `;

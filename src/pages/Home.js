@@ -83,7 +83,7 @@ function Home(){
                     </div>
                     <Link to="/ads" className="seeAllLink">Ver todos</Link>
                     <hr/>
-                    ...
+                    Bem vindo ao Site!
                 </PageArea>
             </PageContainer>
         </>

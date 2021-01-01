@@ -1,29 +1,25 @@
 import React,{useState,useEffect} from 'react';
-import {PageArea} from './SigninStyled';
 import useApi from '../helpers/OLXAPI';
 import {doLogin} from '../helpers/authHandler';
 import {UserDiv,AdsDiv} from './MinhaContaStyled';
 import ItemEdit from '../components/partials/ItemEdit';
-import {PageContainer, PageTitle,ErrorMessage} from '../components/TemplateComponents'
-import Modal from '../components/partials/Modal';
+import {ErrorMessage} from '../components/TemplateComponents'
+
 function MinhaConta(){
     const api= useApi();
-    const [user,setUser] = useState([]);
-    const [email,SetEmail] = useState('');
-    const [password,SetPassword] = useState('');
-    const [name,setName] = useState('');
-    const [state,setState] = useState('');
-    const [confirmpassword,SetConfirmPassword] = useState('');
+    const [email,SetEmail] = useState("");
+    const [password,SetPassword] = useState("");
+    const [name,setName] = useState("");
+    const [state,setState] = useState("");
+    const [confirmpassword,SetConfirmPassword] = useState("");
     const [stateList,setLStateList] = useState([]);
-    const [error,setError]=useState('');
-    const [resultOpacity,setResulOpacity] = useState(0.3);
+    const [error,setError]=useState("");
     const [loading,setLoading] = useState(true);
     const [adList,setAdList] = useState([]);
     useEffect(()=>{
         const getUser = async()=>{
             const json = await api.getUser();
             console.log(json);
-            setUser(json);
             setState(json.state);
             SetConfirmPassword(json.password);
             SetEmail(json.email);
@@ -52,7 +48,6 @@ function MinhaConta(){
             setError(json.error);
         }else{
             doLogin(json.token);
-            console.log('CHEGOU AQUI ESSA COISA');
             window.location.href='/';
         }
         
@@ -76,7 +71,7 @@ function MinhaConta(){
                    <label className="area">
                        <div className="area-title">Estado</div>
                        <div className="area-input">
-                           <select name="state" value={state} onChange={e=>setState(e.target.value)}>
+                           <select value={state} onChange={e=>setState(e.target.value)}>
                                 <option></option>
                                {
                                    stateList.map((item,key)=>
@@ -102,7 +97,7 @@ function MinhaConta(){
                    <label className="area">
                        <div className="area-title">Confirmar Senha</div>
                        <div className="area-input">
-                           <input required type='password'  value={confirmpassword} onChange={e=>SetConfirmPassword(e.target.value)} placeholder={'Confirme a senha'}/>
+                           <input required type='password' value={confirmpassword} onChange={e=>SetConfirmPassword(e.target.value)} placeholder={'Confirme a senha'}/>
                        </div>
                    </label>
                    <label className="area">
@@ -135,7 +130,6 @@ function MinhaConta(){
                                 return <ItemEdit key={key} data={item}/>
                                 
                             })}
-
                         </div>
                     }
 

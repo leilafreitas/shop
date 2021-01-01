@@ -91,5 +91,21 @@ export const PageArea=styled.div`
             }
         }
     }
+    @media (max-width:600px){
+        &{
+            flex-direction:column;
+        }
+        .leftSide{
+            width:auto;
+            margin:10px;
+            ul{
+                display:flex;
+                flex-wrap:wrap;
+                li{
+                    width:50%;
+                }
+            }
+        }
+    }
 `;
 

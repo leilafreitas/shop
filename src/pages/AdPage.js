@@ -37,7 +37,7 @@ function AdPage(){
                     /
                     <Link to={`/ads?state=${adInfo.stateName}`}>{adInfo.stateName}</Link>
                     /
-                    <Link to={`/ads?state=${adInfo.stateName}&cat=${adInfo.category.slug}`}>{adInfo.category.name}</Link>
+                    <Link to={`/ads?state=${adInfo.stateName}&cats=${adInfo.category.slug}`}>{adInfo.category.name}</Link>
                     /
                     <Link to="">{adInfo.title}</Link>
                 </BreadChumb>            

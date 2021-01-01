@@ -45,7 +45,6 @@ const apiFetchPut= async(endpoint,body)=>{
     if(json.notallowed){
         window.location.href="/signin";
     }
-
     return json;
 }
 const apiFetchFile = async(endpoint,body=[])=>{
@@ -78,6 +77,7 @@ const apiFetchGet = async(endpoint,body=[])=>{
     
     const json = await res.json();
     if(json.notallowed){
+        console.log('aqui');
         window.location.href="/signin";
     }
  
@@ -143,10 +143,20 @@ const OlxAPI = {
     putUser:async(name,email,password,state)=>{
         const json =await apiFetchPut(
             '/user/me',
-            {name,email,password,state}
+            {name,password,state}
         );
         
         return json;
+    },
+    updateAd:async(formData,id)=>{
+        console.log('Iniciou');
+        console.log( `/ad/${id}`);
+        const json = await apiFetchFile(
+            `/ad/${id}`,
+            formData
+        );
+        console.log(json);
+        return json
     }
 };
 export default ()=>OlxAPI;
