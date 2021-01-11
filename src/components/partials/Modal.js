@@ -18,6 +18,7 @@ function Modal(props){
     const [desc,setDesc]= useState(props.data.description);
     const [disabled, setDisabled]=useState(false);
     const [error,setError]=useState('');
+    
     useEffect(()=>{
         const getCategories = async ()=>{
             const cats = await api.getCategories();
@@ -26,11 +27,14 @@ function Modal(props){
         getCategories();
     },[])
 
-    const close = () =>{
-        props.setModalVisible(false);
-        console.log('fechar');
+    const handleModalClick = (e) =>{
+        if(e.target.classList.contains('ContainerModal')){
+            props.setShow(false);
+            console.log('fechar');
+        }
           
     }
+
     const handleSubmit=async(e)=>{
         e.preventDefault();
         setDisabled(true);
@@ -76,13 +80,13 @@ function Modal(props){
         allowDecimal:true,
         decimalSymbol:','
     })
+    
     return (
         
         <>
-        {props.Visible === true &&
-            <ModalBackground>
+            <ModalBackground active={props.show} className="ContainerModal" onClick={handleModalClick}>
                 <ModalArea>
-                    <CloseIcon onClick={close} style={{cursor:'pointer',color:'red'}}/>
+                    <CloseIcon onClick={handleModalClick} style={{cursor:'pointer',color:'red'}}/>
                     <form onSubmit={handleSubmit}>
                     <label className="area">
                         <div className="area-title">Status</div>
@@ -168,7 +172,7 @@ function Modal(props){
                 </form>
                 </ModalArea>
             </ModalBackground>
-        }
+        
         </>
     );
 

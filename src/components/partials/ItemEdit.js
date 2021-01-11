@@ -32,7 +32,7 @@ export default (props)=>{
                     props.data.priceNegotiable? <div>Preço negociável</div>:<div>R$ {props.data.price}</div>
                 }
                 
-                <Modal Visible={modalVisible} setModalVisible={setModalVisible} data={props.data}>
+                <Modal show={modalVisible} setShow ={setModalVisible} data={props.data}>
 
                 </Modal>
         </Item>

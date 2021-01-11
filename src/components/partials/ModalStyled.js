@@ -7,7 +7,7 @@ export const ModalBackground =styled.div`
     bottom:0;
     z-index:90;
     background-color:rgba(0,0,0,0.45);
-    display:flex;
+    display:${props=>props.active ? 'flex':'none'};
     justify-content:center;
     align-items:center;
 
